@@ -37,44 +37,48 @@ def create_email_body(location, forecast_df):
         return "<p>Could not retrieve UV forecast data.</p>"
 
     today_forecast = forecast_df.iloc[0]
-    advice, color = get_uv_protection_advice(today_forecast['uv_index'])
+    advice_full, color = get_uv_protection_advice(today_forecast['uv_index'])
+    # Extract only the advice text part, not the UV range like "Very High (8-10): ..."
+    advice_text = advice_full.split(": ", 1)[1] if ": " in advice_full else advice_full 
 
     email_html = f"""\
     <html>
     <head>
         <style>
-            body {{ font-family: sans-serif; margin: 20px; }}
-            h1 {{ color: #333; }}
-            h2 {{ color: #555; }}
-            table {{ border-collapse: collapse; width: 100%; margin-bottom: 20px; }}
-            th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
-            th {{ background-color: #f2f2f2; }}
-            .uv-today {{ background-color: {color}; color: {'black' if color not in ['#d8001d', '#b54cff'] else 'white'}; padding: 10px; border-radius: 5px; }}
-            .footer {{ font-size: 0.8em; color: #777; margin-top: 30px; }}
+            body {{ font-family: sans-serif; margin: 20px; color: #333; }}
+            h1 {{ color: #333; font-size: 24px; margin-bottom: 10px; }}
+            h2 {{ color: #444; font-size: 20px; margin-top: 30px; margin-bottom: 10px; }}
+            p {{ margin-bottom: 10px; line-height: 1.6; }}
+            table {{ border-collapse: collapse; width: 100%; margin-bottom: 20px; font-size: 14px; }}
+            th, td {{ border: 1px solid #ddd; padding: 10px; text-align: left; }}
+            th {{ background-color: #f2f2f2; font-weight: bold; }}
+            .uv-today-index {{ background-color: {color}; color: {'black' if color not in ['#d8001d', '#b54cff'] else 'white'}; padding: 15px; border-radius: 5px; text-align: center; margin-bottom: 15px; }}
+            .uv-today-index strong {{ font-size: 18px; }}
+            .advice-text {{ margin-top: 15px; font-size: 16px; }}
+            .footer {{ font-size: 0.8em; color: #777; margin-top: 30px; text-align: center; }}
         </style>
     </head>
     <body>
         <h1>UV Forecast for {location}</h1>
         
         <h2>Today's Forecast ({today_forecast['date'].strftime('%A, %B %d, %Y')})</h2>
-        <div class="uv-today">
+        <div class="uv-today-index">
             <p><strong>UV Index: {today_forecast['uv_index']}</strong></p>
-            <p>{advice}</p>
-            <p>Ozone Column: {today_forecast['ozone_column']:.1f} DU</p>
         </div>
+        <p class="advice-text">{advice_text}</p>
 
         <h2>Weekly Outlook</h2>
         <table>
-            <tr><th>Date</th><th>UV Index</th><th>Ozone Column (DU)</th><th>Protection Advice</th></tr>
+            <tr><th>Date</th><th>UV Index</th><th>Protection Advice</th></tr>
     """
     for _, row in forecast_df.iterrows():
-        advice_loop, color_loop = get_uv_protection_advice(row['uv_index'])
+        advice_loop_full, color_loop = get_uv_protection_advice(row['uv_index'])
+        advice_summary = advice_loop_full.split(':')[0] # e.g., "Very High (8-10)"
         email_html += f"""\
             <tr>
                 <td>{row['date'].strftime('%A, %b %d')}</td>
                 <td style="background-color:{color_loop}; color:{'black' if color_loop not in ['#d8001d', '#b54cff'] else 'white'}">{row['uv_index']}</td>
-                <td>{row['ozone_column']:.1f}</td>
-                <td>{advice_loop.split(':')[0]}</td>
+                <td>{advice_summary}</td>
             </tr>
         """
     email_html += """\
@@ -169,7 +173,7 @@ def main():
             print("Warning: 'date' column not found in the table.")
             # Decide if this is a critical error: sys.exit(1)
         
-        df = df.dropna(subset=['date', 'uv_index', 'ozone_column']) # Ensure critical columns are good after conversion
+        df = df.dropna(subset=['date', 'uv_index']) # Ensure critical columns are good after conversion
 
         if df.empty:
             print("<p>No valid forecast data to display after processing. Check for parsing errors or missing critical data.</p>")
