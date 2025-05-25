@@ -129,6 +129,22 @@ def send_email(subject, html_content, sender_email, receiver_emails_str, smtp_se
         return False
 
 def main():
+    data_dir = "data"
+    history_file_path = os.path.join(data_dir, "uv_forecast_history.csv")
+
+    # Ensure data directory exists
+    os.makedirs(data_dir, exist_ok=True)
+
+    # Load historical data if it exists
+    historical_df = pd.DataFrame()
+    if os.path.exists(history_file_path):
+        try:
+            historical_df = pd.read_csv(history_file_path, parse_dates=['date'])
+        except pd.errors.EmptyDataError:
+            print(f"Warning: {history_file_path} is empty. Starting with a new history.")
+        except Exception as e:
+            print(f"Warning: Could not load {history_file_path}. Error: {e}. Starting with a new history.")
+
     html_page = fetch_html_content(url)
     location_name = "Your Location" # Default if not found
 
@@ -158,47 +174,99 @@ def main():
 
         df = df_list[0]
         df = df.iloc[1:] # Skip the first data row (which was the HTML h2 title)
-        df = df.dropna(subset=['UV index', 'ozone column']) # Drop metadata/footer rows
-        df = df.reset_index(drop=True)
-
-        # Snake_case column names
-        df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+        # df = df.dropna(subset=['UV index', 'ozone column']) # Drop metadata/footer rows - Keep ozone column if present for historical data
+        # Keep the original column names for historical storage if desired, or ensure they are consistent
+        # For simplicity here, we'll work with the snake_cased names that the rest of the script expects for the email.
+        # If you want to store original names, you might duplicate the df here before renaming columns.
         
-        # Data processing and validation
-        if 'ozone_column' in df.columns:
-            df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
-            df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
+        current_forecast_df = df.copy() # Use a copy for email generation to avoid altering the df before historical merge
+
+        # Snake_case column names for consistency in processing and historical data
+        df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+        current_forecast_df.columns = current_forecast_df.columns.str.strip().str.lower().str.replace(' ', '_')
+
+        # Data processing and validation for the new forecast data
+        required_cols_for_email = ['date', 'uv_index'] # Columns essential for the email
+        # Columns to attempt to process if they exist (like ozone_column for historical data)
+        optional_cols_to_process = ['ozone_column'] 
+
+        processed_cols = []
+
+        if 'date' in df.columns:
+            df['date'] = pd.to_datetime(df['date'], errors='coerce') # Coerce errors for initial broad parsing
+            # More specific parsing attempts if needed (as was previously there)
+            # For this iteration, a simple to_datetime with coerce is used.
+            # You might want to re-introduce the more specific format parsing if dates are inconsistent.
+            processed_cols.append('date')
         else:
-            print("Warning: 'ozone_column' not found in the table.")
-            # Decide if this is a critical error: sys.exit(1)
+            print("Critical Error: 'date' column not found in the fetched table.")
+            sys.exit(1) # Date is absolutely critical
         
         if 'uv_index' in df.columns:
             df['uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce')
+            processed_cols.append('uv_index')
         else:
-            print("Warning: 'uv_index' not found in the table.")
-            # Decide if this is a critical error: sys.exit(1)
-        
-        if 'date' in df.columns:
-            df['date'] = df['date'].astype(str).str.strip()
-            try:
-                df['date'] = pd.to_datetime(df['date'])
-            except ValueError as e:
-                try:
-                    df['date'] = pd.to_datetime(df['date'], format='%d %B %Y', errors='coerce')
-                except Exception as final_e:
-                     print(f"Warning: Could not parse all dates in 'Date' column accurately. Error: {final_e}")
-                     df['date'] = pd.NaT 
-        else:
-            print("Warning: 'date' column not found in the table.")
-            # Decide if this is a critical error: sys.exit(1)
-        
-        df = df.dropna(subset=['date', 'uv_index']) # Ensure critical columns are good after conversion
+            print("Critical Error: 'uv_index' column not found in the fetched table.")
+            sys.exit(1) # UV index is absolutely critical
 
-        if df.empty:
-            print("<p>No valid forecast data to display after processing. Check for parsing errors or missing critical data.</p>")
+        if 'ozone_column' in df.columns:
+            df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
+            df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
+            processed_cols.append('ozone_column')
+        else:
+            print("Warning: 'ozone_column' not found in the fetched table. It will not be in historical data for this run.")
+
+        # Drop rows where any of the critical processed columns are NaT/NaN
+        # This applies to the df that will be merged with historical data
+        df.dropna(subset=processed_cols, how='any', inplace=True)
+
+        # Prepare current_forecast_df for email (it needs same processing as df)
+        if 'date' in current_forecast_df.columns:
+             current_forecast_df['date'] = pd.to_datetime(current_forecast_df['date'], errors='coerce')
+        if 'uv_index' in current_forecast_df.columns:
+             current_forecast_df['uv_index'] = pd.to_numeric(current_forecast_df['uv_index'], errors='coerce')
+        # Ozone is not used in email, but if it were, it would be processed here too for current_forecast_df
+        
+        current_forecast_df.dropna(subset=required_cols_for_email, how='any', inplace=True)
+
+        if current_forecast_df.empty:
+            print("<p>No valid forecast data to display in email after processing. Check for parsing errors or missing critical data.</p>")
             sys.exit(1)
+        
+        # Combine with historical data
+        if not df.empty: # Only proceed if new data is valid after processing
+            # Ensure historical_df has a 'date' column if it's not empty
+            if not historical_df.empty and 'date' not in historical_df.columns:
+                print(f"Warning: Historical data in {history_file_path} is missing a 'date' column. It will be overwritten.")
+                historical_df = pd.DataFrame(columns=df.columns) # Reset to prevent merge errors
+            elif not historical_df.empty:
+                 # Ensure date column is datetime for proper merging and duplicate handling
+                historical_df['date'] = pd.to_datetime(historical_df['date'], errors='coerce')
+                historical_df.dropna(subset=['date'], inplace=True) # Remove rows where date couldn't be parsed
 
-        email_content = create_email_body(location_name, df)
+            # Align columns before concatenation to avoid issues with mismatched columns
+            # This means if historical data has columns not in new data, they become NaN for new rows, and vice-versa.
+            all_columns = list(set(historical_df.columns) | set(df.columns))
+            historical_df = historical_df.reindex(columns=all_columns)
+            df = df.reindex(columns=all_columns)
+
+            combined_df = pd.concat([historical_df, df], ignore_index=True)
+            combined_df.sort_values(by='date', ascending=True, inplace=True)
+            # Keep last entry for each date to ensure fresh data replaces old
+            combined_df.drop_duplicates(subset=['date'], keep='last', inplace=True)
+            
+            # Save updated historical data
+            try:
+                combined_df.to_csv(history_file_path, index=False)
+                print(f"Historical data updated and saved to {history_file_path}")
+            except Exception as e:
+                print(f"Error saving historical data to {history_file_path}: {e}")
+                # Decide if this is a critical error: sys.exit(1)
+        else:
+            print("No valid new forecast data to add to historical records after processing.")
+
+        # Email content generation still uses the freshly fetched & processed data for the current day's forecast
+        email_content = create_email_body(location_name, current_forecast_df)
 
         SENDER_EMAIL = os.environ.get('EMAIL_ADDRESS')
         RECEIVER_EMAILS_STR = os.environ.get('EMAIL_RECIPIENT') # Changed variable name for clarity
