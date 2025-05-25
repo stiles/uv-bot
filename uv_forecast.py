@@ -91,17 +91,28 @@ def create_email_body(location, forecast_df):
 
 def send_email(subject, html_content, sender_email, receiver_emails_str, smtp_server, smtp_port, smtp_username, smtp_password):
     # Split the string of receiver emails into a list
-    # Ensure no empty strings if there are trailing/leading commas or multiple commas
-    receiver_email_list = [email.strip() for email in receiver_emails_str.split(',') if email.strip()]
+    # Clean each email: strip whitespace, then strip common quote characters
+    cleaned_receiver_email_list = []
+    for email in receiver_emails_str.split(','):
+        stripped_email = email.strip()
+        if stripped_email:
+            # Remove leading/trailing single or double quotes
+            if stripped_email.startswith(('"', "'")) and stripped_email.endswith(('"', "'")) and len(stripped_email) > 1:
+                stripped_email = stripped_email[1:-1]
+            cleaned_receiver_email_list.append(stripped_email)
 
-    if not receiver_email_list:
-        print("Error: No valid receiver email addresses provided.")
+    if not cleaned_receiver_email_list:
+        print("Error: No valid receiver email addresses provided after cleaning.")
+        print(f"Original receiver_emails_str: '{receiver_emails_str}'") # Log original string for debugging
         return False
+    
+    # For debugging in GitHub Actions logs - shows exactly what addresses are being used
+    print(f"Attempting to send email to the following cleaned addresses: {cleaned_receiver_email_list}")
 
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
     message["From"] = sender_email
-    message["To"] = ", ".join(receiver_email_list) # Comma-separated list for the 'To' header
+    message["To"] = ", ".join(cleaned_receiver_email_list) # Comma-separated list for the 'To' header
 
     # Attach HTML content
     part = MIMEText(html_content, "html")
@@ -110,8 +121,8 @@ def send_email(subject, html_content, sender_email, receiver_emails_str, smtp_se
     try:
         with smtplib.SMTP_SSL(smtp_server, smtp_port) as server: # Use SMTP_SSL for implicit TLS
             server.login(smtp_username, smtp_password)
-            server.sendmail(sender_email, receiver_email_list, message.as_string()) # Pass the list to sendmail
-        print(f"Email sent successfully to: {', '.join(receiver_email_list)}")
+            server.sendmail(sender_email, cleaned_receiver_email_list, message.as_string()) # Pass the list to sendmail
+        print(f"Email sent successfully to: {', '.join(cleaned_receiver_email_list)}")
         return True
     except Exception as e:
         print(f"Error sending email: {e}")
