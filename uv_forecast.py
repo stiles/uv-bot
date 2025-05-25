@@ -172,18 +172,24 @@ def main():
             print("<p>Pandas could not parse the table found by BeautifulSoup.</p>")
             sys.exit(1)
 
-        df = df_list[0]
-        df = df.iloc[1:] # Skip the first data row (which was the HTML h2 title)
+        # df is the DataFrame that will be processed for historical storage
+        df = df_list[0].iloc[1:].copy() # Explicitly create a copy here
+        
+        # current_forecast_df is used for email generation and should also be a copy
+        # of the relevant slice if it undergoes separate processing or to avoid altering df unintentionally.
+        # Since df is copied above, current_forecast_df made from df.copy() later will be fine.
+
         # df = df.dropna(subset=['UV index', 'ozone column']) # Drop metadata/footer rows - Keep ozone column if present for historical data
         # Keep the original column names for historical storage if desired, or ensure they are consistent
         # For simplicity here, we'll work with the snake_cased names that the rest of the script expects for the email.
         # If you want to store original names, you might duplicate the df here before renaming columns.
         
-        current_forecast_df = df.copy() # Use a copy for email generation to avoid altering the df before historical merge
+        current_forecast_df = df.copy() # Use a copy for email generation
 
         # Snake_case column names for consistency in processing and historical data
-        df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
-        current_forecast_df.columns = current_forecast_df.columns.str.strip().str.lower().str.replace(' ', '_')
+        # Apply to .loc to ensure modification of the actual DataFrame's data
+        df.columns = [col.strip().lower().replace(' ', '_') for col in df.columns]
+        current_forecast_df.columns = [col.strip().lower().replace(' ', '_') for col in current_forecast_df.columns]
 
         # Data processing and validation for the new forecast data
         required_cols_for_email = ['date', 'uv_index'] # Columns essential for the email
@@ -193,41 +199,38 @@ def main():
         processed_cols = []
 
         if 'date' in df.columns:
-            df['date'] = pd.to_datetime(df['date'], errors='coerce') # Coerce errors for initial broad parsing
-            # More specific parsing attempts if needed (as was previously there)
-            # For this iteration, a simple to_datetime with coerce is used.
-            # You might want to re-introduce the more specific format parsing if dates are inconsistent.
+            df.loc[:, 'date'] = pd.to_datetime(df['date'], errors='coerce') # Use .loc for assignment
             processed_cols.append('date')
         else:
             print("Critical Error: 'date' column not found in the fetched table.")
             sys.exit(1) # Date is absolutely critical
         
         if 'uv_index' in df.columns:
-            df['uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce')
+            df.loc[:, 'uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce') # Use .loc for assignment
             processed_cols.append('uv_index')
         else:
             print("Critical Error: 'uv_index' column not found in the fetched table.")
             sys.exit(1) # UV index is absolutely critical
 
         if 'ozone_column' in df.columns:
-            df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
-            df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
+            df.loc[:, 'ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
+            df.loc[:, 'ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce') # Use .loc for assignment
             processed_cols.append('ozone_column')
         else:
             print("Warning: 'ozone_column' not found in the fetched table. It will not be in historical data for this run.")
 
         # Drop rows where any of the critical processed columns are NaT/NaN
         # This applies to the df that will be merged with historical data
-        df.dropna(subset=processed_cols, how='any', inplace=True)
+        df.dropna(subset=processed_cols, how='any', inplace=True) # inplace=True is fine here as df is a dedicated copy
 
         # Prepare current_forecast_df for email (it needs same processing as df)
         if 'date' in current_forecast_df.columns:
-             current_forecast_df['date'] = pd.to_datetime(current_forecast_df['date'], errors='coerce')
+             current_forecast_df.loc[:, 'date'] = pd.to_datetime(current_forecast_df['date'], errors='coerce') # Use .loc
         if 'uv_index' in current_forecast_df.columns:
-             current_forecast_df['uv_index'] = pd.to_numeric(current_forecast_df['uv_index'], errors='coerce')
+             current_forecast_df.loc[:, 'uv_index'] = pd.to_numeric(current_forecast_df['uv_index'], errors='coerce') # Use .loc
         # Ozone is not used in email, but if it were, it would be processed here too for current_forecast_df
         
-        current_forecast_df.dropna(subset=required_cols_for_email, how='any', inplace=True)
+        current_forecast_df.dropna(subset=required_cols_for_email, how='any', inplace=True) # inplace=True is fine
 
         if current_forecast_df.empty:
             print("<p>No valid forecast data to display in email after processing. Check for parsing errors or missing critical data.</p>")
@@ -286,7 +289,7 @@ def main():
             print("Error: SMTP_PORT environment variable is not a valid integer.")
             sys.exit(1)
 
-        email_subject = f"Daily UV Forecast for {location_name} - {df.iloc[0]['date'].strftime('%A, %B %d')}"
+        email_subject = f"Daily UV Forecast for {location_name} - {current_forecast_df.iloc[0]['date'].strftime('%A, %B %d')}"
         if not send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAILS_STR, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD):
             print("Email sending failed. Exiting with error.")
             sys.exit(1) # Critical: email failed to send
