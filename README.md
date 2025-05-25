@@ -1,4 +1,4 @@
-# UV Forecast Bot
+# UV forecast bot
 
 This Python script fetches a 6-day UV forecast from the [Royal Netherlands Meteorological Institute (KNMI)](https://www.temis.nl/uvradiation/nrt/uvindex.php?lon=-118.02&lat=35.12), generates a customized HTML email, sends it to a list of recipients, and stores the forecast data locally in a CSV file.
 
@@ -39,15 +39,3 @@ This Python script fetches a 6-day UV forecast from the [Royal Netherlands Meteo
     4.  Run the script: `python uv_forecast.py`
     5.  If email variables are not set, the script will print error messages about missing variables and exit. If they are set but an email fails to send, it will also exit with an error.
     6.  The script will create/update `data/uv_forecast_history.csv`.
-
-## Dependencies
-
-*   requests
-*   pandas
-*   beautifulsoup4
-
-## Future improvements
-
-*   Allow users to specify location (latitude and longitude) via command-line arguments or a configuration file.
-*   Optionally include the historical data CSV in Git tracking (if desired by the user).
-*   More sophisticated parsing error handling for the source website. 
