@@ -3,6 +3,9 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from io import StringIO
 import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 url = 'https://www.temis.nl/uvradiation/nrt/uvindex.php?lon=-118.02&lat=35.12'
 
@@ -81,6 +84,24 @@ def create_email_body(location, forecast_df):
     """
     return email_html
 
+def send_email(subject, html_content, sender_email, receiver_email, smtp_server, smtp_port, smtp_username, smtp_password):
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    # Attach HTML content
+    part = MIMEText(html_content, "html")
+    message.attach(part)
+
+    try:
+        with smtplib.SMTP_SSL(smtp_server, smtp_port) as server: # Use SMTP_SSL for implicit TLS
+            server.login(smtp_username, smtp_password)
+            server.sendmail(sender_email, receiver_email, message.as_string())
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
 html_page = fetch_html_content(url)
 location_name = "Your Location" # Default if not found
 
@@ -94,6 +115,8 @@ if html_page:
             h2_tag = forecast_table_element.find('h2')
             if h2_tag and h2_tag.string:
                 location_name = h2_tag.string.strip()
+                if not location_name: # If string is empty after stripping
+                    location_name = "UV Forecast" # Default subject if location is not found
 
             df_list = pd.read_html(StringIO(str(forecast_table_element)), header=1)
             
@@ -136,7 +159,32 @@ if html_page:
 
                 if not df.empty:
                     email_content = create_email_body(location_name, df)
-                    print(email_content)
+                    # print(email_content) # Keep or remove based on whether you still want console output
+
+                    # Email sending details from environment variables
+                    SENDER_EMAIL = os.environ.get('SENDER_EMAIL')
+                    RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL')
+                    SMTP_SERVER = os.environ.get('SMTP_SERVER')
+                    SMTP_PORT = os.environ.get('SMTP_PORT')
+                    SMTP_USERNAME = os.environ.get('SMTP_USERNAME') # Often the same as SENDER_EMAIL
+                    SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
+
+                    if all([SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD]):
+                        try:
+                            smtp_port_int = int(SMTP_PORT) # SMTP_PORT needs to be an integer
+                            email_subject = f"Daily UV Forecast for {location_name} - {df.iloc[0]['date'].strftime('%A, %B %d')}"
+                            send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD)
+                        except ValueError:
+                            print("Error: SMTP_PORT environment variable is not a valid integer.")
+                        except Exception as e:
+                            print(f"Error preparing to send email: {e}")
+                    else:
+                        print("One or more email environment variables are not set. Email not sent.")
+                        print("Ensure SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD are set.")
+                        # Fallback to printing if email can't be sent
+                        print("\nFallback email content output:\n")
+                        print(email_content)
+
                 else:
                     print("<p>No valid forecast data to display after processing.</p>")
 
