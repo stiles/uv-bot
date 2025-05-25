@@ -162,12 +162,12 @@ if html_page:
                     # print(email_content) # Keep or remove based on whether you still want console output
 
                     # Email sending details from environment variables
-                    SENDER_EMAIL = os.environ.get('SENDER_EMAIL')
-                    RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL')
+                    SENDER_EMAIL = os.environ.get('EMAIL_ADDRESS')
+                    RECEIVER_EMAIL = os.environ.get('EMAIL_RECIPIENT')
                     SMTP_SERVER = os.environ.get('SMTP_SERVER')
                     SMTP_PORT = os.environ.get('SMTP_PORT')
-                    SMTP_USERNAME = os.environ.get('SMTP_USERNAME') # Often the same as SENDER_EMAIL
-                    SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD')
+                    SMTP_USERNAME = os.environ.get('EMAIL_ADDRESS')
+                    SMTP_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
                     if all([SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD]):
                         try:
@@ -180,7 +180,7 @@ if html_page:
                             print(f"Error preparing to send email: {e}")
                     else:
                         print("One or more email environment variables are not set. Email not sent.")
-                        print("Ensure SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD are set.")
+                        print("Ensure EMAIL_ADDRESS, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_SERVER, SMTP_PORT are set.")
                         # Fallback to printing if email can't be sent
                         print("\nFallback email content output:\n")
                         print(email_content)
