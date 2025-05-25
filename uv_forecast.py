@@ -59,17 +59,17 @@ def create_email_body(location, forecast_df):
         </style>
     </head>
     <body>
-        <h1>UV Forecast for {location}</h1>
+        <h1>Good morning, Eva! Here's your UV forecast for {location}</h1>
         
-        <h2>Today's Forecast ({today_forecast['date'].strftime('%A, %B %d, %Y')})</h2>
+        <h2>Today's forecast for {today_forecast['date'].strftime('%A, %B %d, %Y')}</h2>
         <div class="uv-today-index">
-            <p><strong>UV Index: {today_forecast['uv_index']}</strong></p>
+            <p><strong>UV index: {today_forecast['uv_index']}</strong></p>
         </div>
         <p class="advice-text">{advice_text}</p>
 
-        <h2>Weekly Outlook</h2>
+        <h2>Weekly outlook</h2>
         <table>
-            <tr><th>Date</th><th>UV Index</th><th>Protection Advice</th></tr>
+            <tr><th>Date</th><th>UV index</th><th>Protection advice</th></tr>
     """
     for _, row in forecast_df.iterrows():
         advice_loop_full, color_loop = get_uv_protection_advice(row['uv_index'])
@@ -83,7 +83,7 @@ def create_email_body(location, forecast_df):
         """
     email_html += """\
         </table>
-        <p class="footer">Data sourced from the <a href="https://www.temis.nl/uvradiation/nrt/uvindex.php?lon=-118.02&lat=35.12">Royal Netherlands Meteorological Institute</a>. Stay safe!</p>
+        <p class="footer">Data sourced from the <a href="https://www.temis.nl/uvradiation/nrt/uvindex.php?lon=-118.02&lat=35.12">Royal Netherlands Meteorological Institute</a>. Bot developed by <a href="https://github.com/stiles/uv-bot">Matt Stiles</a>. Stay safe, Eva!</p>
     </body>
     </html>
     """
