@@ -2,7 +2,7 @@ name: Daily UV Forecast
 
 on:
   schedule:
-    - cron: '0 6 * * *' # Runs at 6:00 AM UTC every day
+    - cron: '0 15 * * *' # Runs at 3:00 PM UTC (e.g., 7 AM PST / 8 AM PDT)
   workflow_dispatch: # Allows manual triggering
 
 jobs:
