@@ -89,11 +89,19 @@ def create_email_body(location, forecast_df):
     """
     return email_html
 
-def send_email(subject, html_content, sender_email, receiver_email, smtp_server, smtp_port, smtp_username, smtp_password):
+def send_email(subject, html_content, sender_email, receiver_emails_str, smtp_server, smtp_port, smtp_username, smtp_password):
+    # Split the string of receiver emails into a list
+    # Ensure no empty strings if there are trailing/leading commas or multiple commas
+    receiver_email_list = [email.strip() for email in receiver_emails_str.split(',') if email.strip()]
+
+    if not receiver_email_list:
+        print("Error: No valid receiver email addresses provided.")
+        return False
+
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
     message["From"] = sender_email
-    message["To"] = receiver_email
+    message["To"] = ", ".join(receiver_email_list) # Comma-separated list for the 'To' header
 
     # Attach HTML content
     part = MIMEText(html_content, "html")
@@ -102,8 +110,8 @@ def send_email(subject, html_content, sender_email, receiver_email, smtp_server,
     try:
         with smtplib.SMTP_SSL(smtp_server, smtp_port) as server: # Use SMTP_SSL for implicit TLS
             server.login(smtp_username, smtp_password)
-            server.sendmail(sender_email, receiver_email, message.as_string())
-        print("Email sent successfully!")
+            server.sendmail(sender_email, receiver_email_list, message.as_string()) # Pass the list to sendmail
+        print(f"Email sent successfully to: {', '.join(receiver_email_list)}")
         return True
     except Exception as e:
         print(f"Error sending email: {e}")
@@ -182,13 +190,13 @@ def main():
         email_content = create_email_body(location_name, df)
 
         SENDER_EMAIL = os.environ.get('EMAIL_ADDRESS')
-        RECEIVER_EMAIL = os.environ.get('EMAIL_RECIPIENT')
+        RECEIVER_EMAILS_STR = os.environ.get('EMAIL_RECIPIENT') # Changed variable name for clarity
         SMTP_SERVER = os.environ.get('SMTP_SERVER')
         SMTP_PORT_STR = os.environ.get('SMTP_PORT')
         SMTP_USERNAME = os.environ.get('EMAIL_ADDRESS')
         SMTP_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 
-        if not all([SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT_STR, SMTP_USERNAME, SMTP_PASSWORD]):
+        if not all([SENDER_EMAIL, RECEIVER_EMAILS_STR, SMTP_SERVER, SMTP_PORT_STR, SMTP_USERNAME, SMTP_PASSWORD]):
             print("One or more email environment variables are not set. Email not sent.")
             print("Ensure EMAIL_ADDRESS, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_SERVER, SMTP_PORT are set.")
             sys.exit(1) # Critical: cannot send email
@@ -200,7 +208,7 @@ def main():
             sys.exit(1)
 
         email_subject = f"Daily UV Forecast for {location_name} - {df.iloc[0]['date'].strftime('%A, %B %d')}"
-        if not send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD):
+        if not send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAILS_STR, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD):
             print("Email sending failed. Exiting with error.")
             sys.exit(1) # Critical: email failed to send
 
