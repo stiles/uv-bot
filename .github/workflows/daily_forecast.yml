@@ -8,6 +8,8 @@ on:
 jobs:
   run_script:
     runs-on: ubuntu-latest
+    permissions: # Add permissions for contents
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -29,4 +31,14 @@ jobs:
           EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
-        run: python uv_forecast.py 
+        run: python uv_forecast.py
+
+      - name: Commit and push data files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Automated daily UV forecast data update
+          branch: main
+          file_pattern: data/*.csv data/*.json # Pattern for files to commit
+          commit_user_name: GitHub Actions Bot
+          commit_user_email: actions@github.com
+          commit_author: GitHub Actions Bot <actions@github.com> 
