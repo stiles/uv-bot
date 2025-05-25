@@ -173,8 +173,10 @@ def main():
             sys.exit(1)
 
         # df is the DataFrame that will be processed for historical storage
-        df = df_list[0].iloc[1:].copy() # Explicitly create a copy here
-        
+        # Directly use df_list[0] as pd.read_html with header=1 should handle the header row correctly.
+        # Make a copy to avoid SettingWithCopyWarning on subsequent modifications.
+        df = df_list[0].copy()
+
         # current_forecast_df is used for email generation and should also be a copy
         # of the relevant slice if it undergoes separate processing or to avoid altering df unintentionally.
         # Since df is copied above, current_forecast_df made from df.copy() later will be fine.
