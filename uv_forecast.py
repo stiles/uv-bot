@@ -6,6 +6,7 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import sys
 
 url = 'https://www.temis.nl/uvradiation/nrt/uvindex.php?lon=-118.02&lat=35.12'
 
@@ -29,7 +30,7 @@ def fetch_html_content(url):
         return response.text
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
-        return None
+        sys.exit(1)
 
 def create_email_body(location, forecast_df):
     if forecast_df.empty:
@@ -99,100 +100,115 @@ def send_email(subject, html_content, sender_email, receiver_email, smtp_server,
             server.login(smtp_username, smtp_password)
             server.sendmail(sender_email, receiver_email, message.as_string())
         print("Email sent successfully!")
+        return True
     except Exception as e:
         print(f"Error sending email: {e}")
+        return False
 
-html_page = fetch_html_content(url)
-location_name = "Your Location" # Default if not found
+def main():
+    html_page = fetch_html_content(url)
+    location_name = "Your Location" # Default if not found
 
-if html_page:
+    if not html_page: # Already exits in fetch_html_content if error
+        return # Should not be reached if fetch_html_content exits
+
     soup = BeautifulSoup(html_page, 'html.parser')
     forecast_table_element = soup.find('table', {'border': '2'})
 
-    if forecast_table_element:
-        try:
-            # Try to extract location from H2 tag within the table
-            h2_tag = forecast_table_element.find('h2')
-            if h2_tag and h2_tag.string:
-                location_name = h2_tag.string.strip()
-                if not location_name: # If string is empty after stripping
-                    location_name = "UV Forecast" # Default subject if location is not found
-
-            df_list = pd.read_html(StringIO(str(forecast_table_element)), header=1)
-            
-            if df_list:
-                df = df_list[0]
-                df = df.iloc[1:] # Skip the first data row (which was the HTML h2 title)
-                df = df.dropna(subset=['UV index', 'ozone column']) # Drop metadata/footer rows
-                df = df.reset_index(drop=True)
-
-                # Snake_case column names
-                df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
-                
-                # Ensure 'date' column exists before trying to rename
-                if 'date' in df.columns:
-                    pass # Already named 'date' effectively by snake_casing
-                # Rename other columns if necessary, though snake_casing should handle them
-                # e.g. df = df.rename(columns={'uv_index': 'uv_index', 'ozone_column': 'ozone_column'})
-
-                if 'ozone_column' in df.columns:
-                    df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
-                    df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
-                
-                if 'uv_index' in df.columns:
-                    df['uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce')
-                
-                if 'date' in df.columns:
-                    df['date'] = df['date'].astype(str).str.strip()
-                    try:
-                        df['date'] = pd.to_datetime(df['date'])
-                    except ValueError as e:
-                        # Fallback for dates that might not parse with default format
-                        try:
-                            df['date'] = pd.to_datetime(df['date'], format='%d %B %Y', errors='coerce')
-                        except Exception as final_e:
-                             print(f"Warning: Could not parse all dates in 'Date' column accurately. Error: {final_e}")
-                             df['date'] = pd.NaT # Set to NaT if parsing fails
-                
-                # Drop rows where date parsing failed
-                df = df.dropna(subset=['date'])
-
-                if not df.empty:
-                    email_content = create_email_body(location_name, df)
-                    # print(email_content) # Keep or remove based on whether you still want console output
-
-                    # Email sending details from environment variables
-                    SENDER_EMAIL = os.environ.get('EMAIL_ADDRESS')
-                    RECEIVER_EMAIL = os.environ.get('EMAIL_RECIPIENT')
-                    SMTP_SERVER = os.environ.get('SMTP_SERVER')
-                    SMTP_PORT = os.environ.get('SMTP_PORT')
-                    SMTP_USERNAME = os.environ.get('EMAIL_ADDRESS')
-                    SMTP_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-
-                    if all([SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD]):
-                        try:
-                            smtp_port_int = int(SMTP_PORT) # SMTP_PORT needs to be an integer
-                            email_subject = f"Daily UV Forecast for {location_name} - {df.iloc[0]['date'].strftime('%A, %B %d')}"
-                            send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD)
-                        except ValueError:
-                            print("Error: SMTP_PORT environment variable is not a valid integer.")
-                        except Exception as e:
-                            print(f"Error preparing to send email: {e}")
-                    else:
-                        print("One or more email environment variables are not set. Email not sent.")
-                        print("Ensure EMAIL_ADDRESS, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_SERVER, SMTP_PORT are set.")
-                        # Fallback to printing if email can't be sent
-                        print("\nFallback email content output:\n")
-                        print(email_content)
-
-                else:
-                    print("<p>No valid forecast data to display after processing.</p>")
-
-            else:
-                print("<p>Pandas could not parse the table found by BeautifulSoup.</p>")
-        except Exception as e:
-            print(f"<p>An error occurred during table processing: {e}</p>")
-    else:
+    if not forecast_table_element:
         print("<p>Could not find the forecast table in the HTML. The website structure might have changed.</p>")
-else:
-    print("<p>Failed to fetch HTML content.</p>")
+        sys.exit(1)
+
+    try:
+        # Try to extract location from H2 tag within the table
+        h2_tag = forecast_table_element.find('h2')
+        if h2_tag and h2_tag.string:
+            location_name = h2_tag.string.strip()
+            if not location_name: # If string is empty after stripping
+                location_name = "UV Forecast" # Default subject if location is not found
+
+        df_list = pd.read_html(StringIO(str(forecast_table_element)), header=1)
+        
+        if not df_list:
+            print("<p>Pandas could not parse the table found by BeautifulSoup.</p>")
+            sys.exit(1)
+
+        df = df_list[0]
+        df = df.iloc[1:] # Skip the first data row (which was the HTML h2 title)
+        df = df.dropna(subset=['UV index', 'ozone column']) # Drop metadata/footer rows
+        df = df.reset_index(drop=True)
+
+        # Snake_case column names
+        df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+        
+        # Data processing and validation
+        if 'ozone_column' in df.columns:
+            df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
+            df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
+        else:
+            print("Warning: 'ozone_column' not found in the table.")
+            # Decide if this is a critical error: sys.exit(1)
+        
+        if 'uv_index' in df.columns:
+            df['uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce')
+        else:
+            print("Warning: 'uv_index' not found in the table.")
+            # Decide if this is a critical error: sys.exit(1)
+        
+        if 'date' in df.columns:
+            df['date'] = df['date'].astype(str).str.strip()
+            try:
+                df['date'] = pd.to_datetime(df['date'])
+            except ValueError as e:
+                try:
+                    df['date'] = pd.to_datetime(df['date'], format='%d %B %Y', errors='coerce')
+                except Exception as final_e:
+                     print(f"Warning: Could not parse all dates in 'Date' column accurately. Error: {final_e}")
+                     df['date'] = pd.NaT 
+        else:
+            print("Warning: 'date' column not found in the table.")
+            # Decide if this is a critical error: sys.exit(1)
+        
+        df = df.dropna(subset=['date', 'uv_index', 'ozone_column']) # Ensure critical columns are good after conversion
+
+        if df.empty:
+            print("<p>No valid forecast data to display after processing. Check for parsing errors or missing critical data.</p>")
+            sys.exit(1)
+
+        email_content = create_email_body(location_name, df)
+
+        SENDER_EMAIL = os.environ.get('EMAIL_ADDRESS')
+        RECEIVER_EMAIL = os.environ.get('EMAIL_RECIPIENT')
+        SMTP_SERVER = os.environ.get('SMTP_SERVER')
+        SMTP_PORT_STR = os.environ.get('SMTP_PORT')
+        SMTP_USERNAME = os.environ.get('EMAIL_ADDRESS')
+        SMTP_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+
+        if not all([SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, SMTP_PORT_STR, SMTP_USERNAME, SMTP_PASSWORD]):
+            print("One or more email environment variables are not set. Email not sent.")
+            print("Ensure EMAIL_ADDRESS, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_SERVER, SMTP_PORT are set.")
+            sys.exit(1) # Critical: cannot send email
+        
+        try:
+            smtp_port_int = int(SMTP_PORT_STR)
+        except ValueError:
+            print("Error: SMTP_PORT environment variable is not a valid integer.")
+            sys.exit(1)
+
+        email_subject = f"Daily UV Forecast for {location_name} - {df.iloc[0]['date'].strftime('%A, %B %d')}"
+        if not send_email(email_subject, email_content, SENDER_EMAIL, RECEIVER_EMAIL, SMTP_SERVER, smtp_port_int, SMTP_USERNAME, SMTP_PASSWORD):
+            print("Email sending failed. Exiting with error.")
+            sys.exit(1) # Critical: email failed to send
+
+    except pd.errors.EmptyDataError:
+        print("<p>Pandas read_html found a table but it was empty or unparseable.</p>")
+        sys.exit(1)
+    except KeyError as e:
+        print(f"<p>A required column was not found in the parsed data: {e}. The table structure might have changed.</p>")
+        sys.exit(1)
+    except Exception as e:
+        print(f"<p>An unexpected error occurred during table processing: {e}</p>")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
