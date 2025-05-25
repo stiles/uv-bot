@@ -130,20 +130,21 @@ def send_email(subject, html_content, sender_email, receiver_emails_str, smtp_se
 
 def main():
     data_dir = "data"
-    history_file_path = os.path.join(data_dir, "uv_forecast_history.csv")
+    history_csv_path = os.path.join(data_dir, "uv_forecast_history.csv")
+    history_json_path = os.path.join(data_dir, "uv_forecast_history.json") # Path for JSON file
 
     # Ensure data directory exists
     os.makedirs(data_dir, exist_ok=True)
 
     # Load historical data if it exists
     historical_df = pd.DataFrame()
-    if os.path.exists(history_file_path):
+    if os.path.exists(history_csv_path):
         try:
-            historical_df = pd.read_csv(history_file_path, parse_dates=['date'])
+            historical_df = pd.read_csv(history_csv_path, parse_dates=['date'])
         except pd.errors.EmptyDataError:
-            print(f"Warning: {history_file_path} is empty. Starting with a new history.")
+            print(f"Warning: {history_csv_path} is empty. Starting with a new history.")
         except Exception as e:
-            print(f"Warning: Could not load {history_file_path}. Error: {e}. Starting with a new history.")
+            print(f"Warning: Could not load {history_csv_path}. Error: {e}. Starting with a new history.")
 
     html_page = fetch_html_content(url)
     location_name = "Your Location" # Default if not found
@@ -242,7 +243,7 @@ def main():
         if not df.empty: # Only proceed if new data is valid after processing
             # Ensure historical_df has a 'date' column if it's not empty
             if not historical_df.empty and 'date' not in historical_df.columns:
-                print(f"Warning: Historical data in {history_file_path} is missing a 'date' column. It will be overwritten.")
+                print(f"Warning: Historical data in {history_csv_path} is missing a 'date' column. It will be overwritten.")
                 historical_df = pd.DataFrame(columns=df.columns) # Reset to prevent merge errors
             elif not historical_df.empty:
                  # Ensure date column is datetime for proper merging and duplicate handling
@@ -262,10 +263,18 @@ def main():
             
             # Save updated historical data
             try:
-                combined_df.to_csv(history_file_path, index=False)
-                print(f"Historical data updated and saved to {history_file_path}")
+                combined_df.to_csv(history_csv_path, index=False)
+                print(f"Historical data updated and saved to {history_csv_path}")
+                
+                json_df = combined_df.copy()
+                if 'date' in json_df.columns:
+                    json_df['date'] = json_df['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+                
+                json_df.to_json(history_json_path, orient='records', indent=2, date_format='iso')
+                print(f"Historical data updated and saved to {history_json_path}")
+
             except Exception as e:
-                print(f"Error saving historical data to {history_file_path}: {e}")
+                print(f"Error saving historical data: {e}")
                 # Decide if this is a critical error: sys.exit(1)
         else:
             print("No valid new forecast data to add to historical records after processing.")
