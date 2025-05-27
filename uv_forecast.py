@@ -268,6 +268,11 @@ def main():
                 
                 json_df = combined_df.copy()
                 if 'date' in json_df.columns:
+                    # Ensure date column is datetime and handle any NaN values
+                    json_df['date'] = pd.to_datetime(json_df['date'], errors='coerce')
+                    # Drop rows where date conversion failed
+                    json_df = json_df.dropna(subset=['date'])
+                    # Convert to string format for JSON
                     json_df['date'] = json_df['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
                 
                 json_df.to_json(history_json_path, orient='records', indent=2, date_format='iso')
@@ -292,7 +297,12 @@ def main():
         if not all([SENDER_EMAIL, RECEIVER_EMAILS_STR, SMTP_SERVER, SMTP_PORT_STR, SMTP_USERNAME, SMTP_PASSWORD]):
             print("One or more email environment variables are not set. Email not sent.")
             print("Ensure EMAIL_ADDRESS, EMAIL_PASSWORD, EMAIL_RECIPIENT, SMTP_SERVER, SMTP_PORT are set.")
-            sys.exit(1) # Critical: cannot send email
+            # Only exit with error in CI environment (GitHub Actions) where email is expected
+            if os.environ.get('GITHUB_ACTIONS'):
+                sys.exit(1) # Critical: cannot send email in CI
+            else:
+                print("Running locally - continuing without sending email.")
+                return # Exit gracefully for local runs
         
         try:
             smtp_port_int = int(SMTP_PORT_STR)

@@ -38,7 +38,7 @@ jobs:
         with:
           commit_message: Automated daily UV forecast data update
           branch: main
-          file_pattern: data/*.csv data/*.json # Pattern for files to commit
+          file_pattern: data/ # Commit all files in data directory
           commit_user_name: GitHub Actions Bot
           commit_user_email: actions@github.com
           commit_author: GitHub Actions Bot <actions@github.com> 
