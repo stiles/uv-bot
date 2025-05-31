@@ -1,4 +1,4 @@
-name: Daily UV Forecast
+name: uv-bot
 
 on:
   schedule:
