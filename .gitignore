@@ -1,5 +1,5 @@
 .DS_Store
 
 # Data files that change frequently - should not be tracked
-data/uv_forecast_history.csv
-data/uv_forecast_history.json
+# data/uv_forecast_history.csv
+# data/uv_forecast_history.json
