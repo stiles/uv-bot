@@ -202,7 +202,7 @@ def main():
         processed_cols = []
 
         if 'date' in df.columns:
-            df.loc[:, 'date'] = pd.to_datetime(df['date'], errors='coerce') # Use .loc for assignment
+            df.loc[:, 'date'] = pd.to_datetime(df['date'], format='%d %b %Y', errors='coerce') # Use explicit format
             processed_cols.append('date')
         else:
             print("Critical Error: 'date' column not found in the fetched table.")
