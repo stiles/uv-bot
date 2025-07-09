@@ -225,28 +225,33 @@
     "uv_index":11.8
   },
   {
-    "ozone_column":290.6,
+    "ozone_column":282.4,
     "date":"2025-07-09 00:00:00",
-    "uv_index":11.5
+    "uv_index":12.0
   },
   {
-    "ozone_column":293.5,
+    "ozone_column":293.3,
     "date":"2025-07-10 00:00:00",
     "uv_index":11.4
   },
   {
-    "ozone_column":291.0,
+    "ozone_column":298.4,
     "date":"2025-07-11 00:00:00",
-    "uv_index":11.5
+    "uv_index":11.1
   },
   {
-    "ozone_column":285.0,
+    "ozone_column":284.9,
     "date":"2025-07-12 00:00:00",
     "uv_index":11.8
   },
   {
-    "ozone_column":296.0,
+    "ozone_column":291.8,
     "date":"2025-07-13 00:00:00",
-    "uv_index":11.2
+    "uv_index":11.4
+  },
+  {
+    "ozone_column":300.8,
+    "date":"2025-07-14 00:00:00",
+    "uv_index":10.9
   }
 ]
