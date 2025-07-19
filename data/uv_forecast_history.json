@@ -276,27 +276,32 @@
   },
   {
     "date":"2025-07-19 00:00:00",
-    "ozone_column":304.8,
-    "uv_index":10.6
+    "ozone_column":307.9,
+    "uv_index":10.5
   },
   {
     "date":"2025-07-20 00:00:00",
-    "ozone_column":308.4,
+    "ozone_column":307.6,
     "uv_index":10.4
   },
   {
     "date":"2025-07-21 00:00:00",
-    "ozone_column":302.6,
-    "uv_index":10.7
+    "ozone_column":307.4,
+    "uv_index":10.4
   },
   {
     "date":"2025-07-22 00:00:00",
-    "ozone_column":308.3,
+    "ozone_column":307.5,
     "uv_index":10.4
   },
   {
     "date":"2025-07-23 00:00:00",
-    "ozone_column":314.7,
-    "uv_index":10.1
+    "ozone_column":307.3,
+    "uv_index":10.4
+  },
+  {
+    "date":"2025-07-24 00:00:00",
+    "ozone_column":319.1,
+    "uv_index":9.8
   }
 ]
