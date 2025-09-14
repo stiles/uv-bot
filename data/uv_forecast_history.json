@@ -1,587 +1,592 @@
 [
   {
-    "date":"2025-05-25 00:00:00",
+    "ozone_column":338.1,
     "uv_index":9.3,
-    "ozone_column":338.1
+    "date":"2025-05-25 00:00:00"
   },
   {
-    "date":"2025-05-26 00:00:00",
+    "ozone_column":336.5,
     "uv_index":9.4,
-    "ozone_column":336.5
+    "date":"2025-05-26 00:00:00"
   },
   {
-    "date":"2025-05-27 00:00:00",
+    "ozone_column":352.6,
     "uv_index":8.8,
-    "ozone_column":352.6
+    "date":"2025-05-27 00:00:00"
   },
   {
-    "date":"2025-05-28 00:00:00",
+    "ozone_column":340.4,
     "uv_index":9.2,
-    "ozone_column":340.4
+    "date":"2025-05-28 00:00:00"
   },
   {
-    "date":"2025-05-29 00:00:00",
+    "ozone_column":353.0,
     "uv_index":8.8,
-    "ozone_column":353.0
+    "date":"2025-05-29 00:00:00"
   },
   {
-    "date":"2025-05-30 00:00:00",
+    "ozone_column":325.9,
     "uv_index":9.8,
-    "ozone_column":325.9
+    "date":"2025-05-30 00:00:00"
   },
   {
-    "date":"2025-05-31 00:00:00",
+    "ozone_column":348.6,
     "uv_index":9.0,
-    "ozone_column":348.6
+    "date":"2025-05-31 00:00:00"
   },
   {
-    "date":"2025-06-01 00:00:00",
+    "ozone_column":336.6,
     "uv_index":9.4,
-    "ozone_column":336.6
+    "date":"2025-06-01 00:00:00"
   },
   {
-    "date":"2025-06-02 00:00:00",
+    "ozone_column":322.6,
     "uv_index":10.0,
-    "ozone_column":322.6
+    "date":"2025-06-02 00:00:00"
   },
   {
-    "date":"2025-06-03 00:00:00",
+    "ozone_column":352.7,
     "uv_index":8.9,
-    "ozone_column":352.7
+    "date":"2025-06-03 00:00:00"
   },
   {
-    "date":"2025-06-04 00:00:00",
+    "ozone_column":330.8,
     "uv_index":9.7,
-    "ozone_column":330.8
+    "date":"2025-06-04 00:00:00"
   },
   {
-    "date":"2025-06-05 00:00:00",
+    "ozone_column":330.9,
     "uv_index":9.7,
-    "ozone_column":330.9
+    "date":"2025-06-05 00:00:00"
   },
   {
-    "date":"2025-06-06 00:00:00",
+    "ozone_column":324.2,
     "uv_index":10.0,
-    "ozone_column":324.2
+    "date":"2025-06-06 00:00:00"
   },
   {
-    "date":"2025-06-07 00:00:00",
+    "ozone_column":312.3,
     "uv_index":10.5,
-    "ozone_column":312.3
+    "date":"2025-06-07 00:00:00"
   },
   {
-    "date":"2025-06-08 00:00:00",
+    "ozone_column":316.1,
     "uv_index":10.4,
-    "ozone_column":316.1
+    "date":"2025-06-08 00:00:00"
   },
   {
-    "date":"2025-06-09 00:00:00",
+    "ozone_column":322.5,
     "uv_index":10.1,
-    "ozone_column":322.5
+    "date":"2025-06-09 00:00:00"
   },
   {
-    "date":"2025-06-10 00:00:00",
+    "ozone_column":307.9,
     "uv_index":10.8,
-    "ozone_column":307.9
+    "date":"2025-06-10 00:00:00"
   },
   {
-    "date":"2025-06-11 00:00:00",
+    "ozone_column":312.8,
     "uv_index":10.5,
-    "ozone_column":312.8
+    "date":"2025-06-11 00:00:00"
   },
   {
-    "date":"2025-06-12 00:00:00",
+    "ozone_column":312.0,
     "uv_index":10.6,
-    "ozone_column":312.0
+    "date":"2025-06-12 00:00:00"
   },
   {
-    "date":"2025-06-13 00:00:00",
+    "ozone_column":308.8,
     "uv_index":10.7,
-    "ozone_column":308.8
+    "date":"2025-06-13 00:00:00"
   },
   {
-    "date":"2025-06-14 00:00:00",
+    "ozone_column":311.2,
     "uv_index":10.6,
-    "ozone_column":311.2
+    "date":"2025-06-14 00:00:00"
   },
   {
-    "date":"2025-06-15 00:00:00",
+    "ozone_column":302.5,
     "uv_index":11.0,
-    "ozone_column":302.5
+    "date":"2025-06-15 00:00:00"
   },
   {
-    "date":"2025-06-16 00:00:00",
+    "ozone_column":296.3,
     "uv_index":11.4,
-    "ozone_column":296.3
+    "date":"2025-06-16 00:00:00"
   },
   {
-    "date":"2025-06-17 00:00:00",
+    "ozone_column":324.4,
     "uv_index":10.0,
-    "ozone_column":324.4
+    "date":"2025-06-17 00:00:00"
   },
   {
-    "date":"2025-06-18 00:00:00",
+    "ozone_column":289.2,
     "uv_index":11.8,
-    "ozone_column":289.2
+    "date":"2025-06-18 00:00:00"
   },
   {
-    "date":"2025-06-19 00:00:00",
+    "ozone_column":304.8,
     "uv_index":10.9,
-    "ozone_column":304.8
+    "date":"2025-06-19 00:00:00"
   },
   {
-    "date":"2025-06-20 00:00:00",
+    "ozone_column":312.3,
     "uv_index":10.6,
-    "ozone_column":312.3
+    "date":"2025-06-20 00:00:00"
   },
   {
-    "date":"2025-06-21 00:00:00",
+    "ozone_column":311.6,
     "uv_index":10.6,
-    "ozone_column":311.6
+    "date":"2025-06-21 00:00:00"
   },
   {
-    "date":"2025-06-22 00:00:00",
+    "ozone_column":326.1,
     "uv_index":9.9,
-    "ozone_column":326.1
+    "date":"2025-06-22 00:00:00"
   },
   {
-    "date":"2025-06-23 00:00:00",
+    "ozone_column":353.3,
     "uv_index":8.9,
-    "ozone_column":353.3
+    "date":"2025-06-23 00:00:00"
   },
   {
-    "date":"2025-06-24 00:00:00",
+    "ozone_column":352.8,
     "uv_index":8.9,
-    "ozone_column":352.8
+    "date":"2025-06-24 00:00:00"
   },
   {
-    "date":"2025-06-25 00:00:00",
+    "ozone_column":332.7,
     "uv_index":9.7,
-    "ozone_column":332.7
+    "date":"2025-06-25 00:00:00"
   },
   {
-    "date":"2025-06-26 00:00:00",
+    "ozone_column":321.3,
     "uv_index":10.1,
-    "ozone_column":321.3
+    "date":"2025-06-26 00:00:00"
   },
   {
-    "date":"2025-06-27 00:00:00",
+    "ozone_column":320.8,
     "uv_index":10.2,
-    "ozone_column":320.8
+    "date":"2025-06-27 00:00:00"
   },
   {
-    "date":"2025-06-28 00:00:00",
+    "ozone_column":310.2,
     "uv_index":10.6,
-    "ozone_column":310.2
+    "date":"2025-06-28 00:00:00"
   },
   {
-    "date":"2025-06-29 00:00:00",
+    "ozone_column":307.2,
     "uv_index":10.8,
-    "ozone_column":307.2
+    "date":"2025-06-29 00:00:00"
   },
   {
-    "date":"2025-06-30 00:00:00",
+    "ozone_column":300.3,
     "uv_index":11.1,
-    "ozone_column":300.3
+    "date":"2025-06-30 00:00:00"
   },
   {
-    "date":"2025-07-01 00:00:00",
+    "ozone_column":311.6,
     "uv_index":10.5,
-    "ozone_column":311.6
+    "date":"2025-07-01 00:00:00"
   },
   {
-    "date":"2025-07-02 00:00:00",
+    "ozone_column":303.4,
     "uv_index":10.9,
-    "ozone_column":303.4
+    "date":"2025-07-02 00:00:00"
   },
   {
-    "date":"2025-07-03 00:00:00",
+    "ozone_column":310.8,
     "uv_index":10.6,
-    "ozone_column":310.8
+    "date":"2025-07-03 00:00:00"
   },
   {
-    "date":"2025-07-04 00:00:00",
+    "ozone_column":307.2,
     "uv_index":10.7,
-    "ozone_column":307.2
+    "date":"2025-07-04 00:00:00"
   },
   {
-    "date":"2025-07-05 00:00:00",
+    "ozone_column":299.8,
     "uv_index":11.1,
-    "ozone_column":299.8
+    "date":"2025-07-05 00:00:00"
   },
   {
-    "date":"2025-07-06 00:00:00",
+    "ozone_column":318.6,
     "uv_index":10.2,
-    "ozone_column":318.6
+    "date":"2025-07-06 00:00:00"
   },
   {
-    "date":"2025-07-07 00:00:00",
+    "ozone_column":301.6,
     "uv_index":11.0,
-    "ozone_column":301.6
+    "date":"2025-07-07 00:00:00"
   },
   {
-    "date":"2025-07-08 00:00:00",
+    "ozone_column":285.7,
     "uv_index":11.8,
-    "ozone_column":285.7
+    "date":"2025-07-08 00:00:00"
   },
   {
-    "date":"2025-07-09 00:00:00",
+    "ozone_column":282.4,
     "uv_index":12.0,
-    "ozone_column":282.4
+    "date":"2025-07-09 00:00:00"
   },
   {
-    "date":"2025-07-10 00:00:00",
+    "ozone_column":298.7,
     "uv_index":11.1,
-    "ozone_column":298.7
+    "date":"2025-07-10 00:00:00"
   },
   {
-    "date":"2025-07-11 00:00:00",
+    "ozone_column":289.6,
     "uv_index":11.6,
-    "ozone_column":289.6
+    "date":"2025-07-11 00:00:00"
   },
   {
-    "date":"2025-07-12 00:00:00",
+    "ozone_column":293.8,
     "uv_index":11.3,
-    "ozone_column":293.8
+    "date":"2025-07-12 00:00:00"
   },
   {
-    "date":"2025-07-13 00:00:00",
+    "ozone_column":293.8,
     "uv_index":11.3,
-    "ozone_column":293.8
+    "date":"2025-07-13 00:00:00"
   },
   {
-    "date":"2025-07-14 00:00:00",
+    "ozone_column":303.6,
     "uv_index":10.8,
-    "ozone_column":303.6
+    "date":"2025-07-14 00:00:00"
   },
   {
-    "date":"2025-07-15 00:00:00",
+    "ozone_column":304.2,
     "uv_index":10.7,
-    "ozone_column":304.2
+    "date":"2025-07-15 00:00:00"
   },
   {
-    "date":"2025-07-16 00:00:00",
+    "ozone_column":301.0,
     "uv_index":10.9,
-    "ozone_column":301.0
+    "date":"2025-07-16 00:00:00"
   },
   {
-    "date":"2025-07-17 00:00:00",
+    "ozone_column":302.2,
     "uv_index":10.8,
-    "ozone_column":302.2
+    "date":"2025-07-17 00:00:00"
   },
   {
-    "date":"2025-07-18 00:00:00",
+    "ozone_column":307.3,
     "uv_index":10.5,
-    "ozone_column":307.3
+    "date":"2025-07-18 00:00:00"
   },
   {
-    "date":"2025-07-19 00:00:00",
+    "ozone_column":307.9,
     "uv_index":10.5,
-    "ozone_column":307.9
+    "date":"2025-07-19 00:00:00"
   },
   {
-    "date":"2025-07-20 00:00:00",
+    "ozone_column":313.6,
     "uv_index":10.2,
-    "ozone_column":313.6
+    "date":"2025-07-20 00:00:00"
   },
   {
-    "date":"2025-07-21 00:00:00",
+    "ozone_column":316.5,
     "uv_index":10.0,
-    "ozone_column":316.5
+    "date":"2025-07-21 00:00:00"
   },
   {
-    "date":"2025-07-22 00:00:00",
+    "ozone_column":309.1,
     "uv_index":10.3,
-    "ozone_column":309.1
+    "date":"2025-07-22 00:00:00"
   },
   {
-    "date":"2025-07-23 00:00:00",
+    "ozone_column":314.8,
     "uv_index":10.0,
-    "ozone_column":314.8
+    "date":"2025-07-23 00:00:00"
   },
   {
-    "date":"2025-07-24 00:00:00",
+    "ozone_column":321.5,
     "uv_index":9.7,
-    "ozone_column":321.5
+    "date":"2025-07-24 00:00:00"
   },
   {
-    "date":"2025-07-25 00:00:00",
+    "ozone_column":313.0,
     "uv_index":10.1,
-    "ozone_column":313.0
+    "date":"2025-07-25 00:00:00"
   },
   {
-    "date":"2025-07-26 00:00:00",
+    "ozone_column":314.4,
     "uv_index":10.0,
-    "ozone_column":314.4
+    "date":"2025-07-26 00:00:00"
   },
   {
-    "date":"2025-07-27 00:00:00",
+    "ozone_column":306.3,
     "uv_index":10.3,
-    "ozone_column":306.3
+    "date":"2025-07-27 00:00:00"
   },
   {
-    "date":"2025-07-28 00:00:00",
+    "ozone_column":310.9,
     "uv_index":10.1,
-    "ozone_column":310.9
+    "date":"2025-07-28 00:00:00"
   },
   {
-    "date":"2025-07-29 00:00:00",
+    "ozone_column":309.8,
     "uv_index":10.1,
-    "ozone_column":309.8
+    "date":"2025-07-29 00:00:00"
   },
   {
-    "date":"2025-07-30 00:00:00",
+    "ozone_column":310.9,
     "uv_index":10.0,
-    "ozone_column":310.9
+    "date":"2025-07-30 00:00:00"
   },
   {
-    "date":"2025-07-31 00:00:00",
+    "ozone_column":312.8,
     "uv_index":9.9,
-    "ozone_column":312.8
+    "date":"2025-07-31 00:00:00"
   },
   {
-    "date":"2025-08-01 00:00:00",
+    "ozone_column":293.8,
     "uv_index":10.8,
-    "ozone_column":293.8
+    "date":"2025-08-01 00:00:00"
   },
   {
-    "date":"2025-08-02 00:00:00",
+    "ozone_column":297.1,
     "uv_index":10.6,
-    "ozone_column":297.1
+    "date":"2025-08-02 00:00:00"
   },
   {
-    "date":"2025-08-03 00:00:00",
+    "ozone_column":304.8,
     "uv_index":10.2,
-    "ozone_column":304.8
+    "date":"2025-08-03 00:00:00"
   },
   {
-    "date":"2025-08-04 00:00:00",
+    "ozone_column":294.1,
     "uv_index":10.6,
-    "ozone_column":294.1
+    "date":"2025-08-04 00:00:00"
   },
   {
-    "date":"2025-08-05 00:00:00",
+    "ozone_column":300.1,
     "uv_index":10.3,
-    "ozone_column":300.1
+    "date":"2025-08-05 00:00:00"
   },
   {
-    "date":"2025-08-06 00:00:00",
+    "ozone_column":310.0,
     "uv_index":9.8,
-    "ozone_column":310.0
+    "date":"2025-08-06 00:00:00"
   },
   {
-    "date":"2025-08-07 00:00:00",
+    "ozone_column":296.7,
     "uv_index":10.4,
-    "ozone_column":296.7
+    "date":"2025-08-07 00:00:00"
   },
   {
-    "date":"2025-08-08 00:00:00",
+    "ozone_column":294.1,
     "uv_index":10.5,
-    "ozone_column":294.1
+    "date":"2025-08-08 00:00:00"
   },
   {
-    "date":"2025-08-09 00:00:00",
+    "ozone_column":313.9,
     "uv_index":9.5,
-    "ozone_column":313.9
+    "date":"2025-08-09 00:00:00"
   },
   {
-    "date":"2025-08-10 00:00:00",
+    "ozone_column":308.0,
     "uv_index":9.7,
-    "ozone_column":308.0
+    "date":"2025-08-10 00:00:00"
   },
   {
-    "date":"2025-08-11 00:00:00",
+    "ozone_column":300.0,
     "uv_index":10.0,
-    "ozone_column":300.0
+    "date":"2025-08-11 00:00:00"
   },
   {
-    "date":"2025-08-12 00:00:00",
+    "ozone_column":310.0,
     "uv_index":9.5,
-    "ozone_column":310.0
+    "date":"2025-08-12 00:00:00"
   },
   {
-    "date":"2025-08-13 00:00:00",
+    "ozone_column":302.3,
     "uv_index":9.8,
-    "ozone_column":302.3
+    "date":"2025-08-13 00:00:00"
   },
   {
-    "date":"2025-08-14 00:00:00",
+    "ozone_column":298.2,
     "uv_index":10.0,
-    "ozone_column":298.2
+    "date":"2025-08-14 00:00:00"
   },
   {
-    "date":"2025-08-15 00:00:00",
+    "ozone_column":308.9,
     "uv_index":9.4,
-    "ozone_column":308.9
+    "date":"2025-08-15 00:00:00"
   },
   {
-    "date":"2025-08-16 00:00:00",
+    "ozone_column":313.7,
     "uv_index":9.2,
-    "ozone_column":313.7
+    "date":"2025-08-16 00:00:00"
   },
   {
-    "date":"2025-08-17 00:00:00",
+    "ozone_column":310.5,
     "uv_index":9.3,
-    "ozone_column":310.5
+    "date":"2025-08-17 00:00:00"
   },
   {
-    "date":"2025-08-18 00:00:00",
+    "ozone_column":298.3,
     "uv_index":9.7,
-    "ozone_column":298.3
+    "date":"2025-08-18 00:00:00"
   },
   {
-    "date":"2025-08-19 00:00:00",
+    "ozone_column":304.8,
     "uv_index":9.4,
-    "ozone_column":304.8
+    "date":"2025-08-19 00:00:00"
   },
   {
-    "date":"2025-08-20 00:00:00",
+    "ozone_column":278.4,
     "uv_index":10.6,
-    "ozone_column":278.4
+    "date":"2025-08-20 00:00:00"
   },
   {
-    "date":"2025-08-21 00:00:00",
+    "ozone_column":294.9,
     "uv_index":9.7,
-    "ozone_column":294.9
+    "date":"2025-08-21 00:00:00"
   },
   {
-    "date":"2025-08-22 00:00:00",
+    "ozone_column":296.2,
     "uv_index":9.6,
-    "ozone_column":296.2
+    "date":"2025-08-22 00:00:00"
   },
   {
-    "date":"2025-08-23 00:00:00",
+    "ozone_column":288.7,
     "uv_index":9.9,
-    "ozone_column":288.7
+    "date":"2025-08-23 00:00:00"
   },
   {
-    "date":"2025-08-24 00:00:00",
+    "ozone_column":289.3,
     "uv_index":9.8,
-    "ozone_column":289.3
+    "date":"2025-08-24 00:00:00"
   },
   {
-    "date":"2025-08-25 00:00:00",
+    "ozone_column":293.9,
     "uv_index":9.5,
-    "ozone_column":293.9
+    "date":"2025-08-25 00:00:00"
   },
   {
-    "date":"2025-08-26 00:00:00",
+    "ozone_column":301.4,
     "uv_index":9.1,
-    "ozone_column":301.4
+    "date":"2025-08-26 00:00:00"
   },
   {
-    "date":"2025-08-27 00:00:00",
+    "ozone_column":312.8,
     "uv_index":8.6,
-    "ozone_column":312.8
+    "date":"2025-08-27 00:00:00"
   },
   {
-    "date":"2025-08-28 00:00:00",
+    "ozone_column":292.9,
     "uv_index":9.3,
-    "ozone_column":292.9
+    "date":"2025-08-28 00:00:00"
   },
   {
-    "date":"2025-08-29 00:00:00",
+    "ozone_column":311.3,
     "uv_index":8.5,
-    "ozone_column":311.3
+    "date":"2025-08-29 00:00:00"
   },
   {
-    "date":"2025-08-30 00:00:00",
+    "ozone_column":290.7,
     "uv_index":9.2,
-    "ozone_column":290.7
+    "date":"2025-08-30 00:00:00"
   },
   {
-    "date":"2025-08-31 00:00:00",
+    "ozone_column":291.4,
     "uv_index":9.1,
-    "ozone_column":291.4
+    "date":"2025-08-31 00:00:00"
   },
   {
-    "date":"2025-09-01 00:00:00",
+    "ozone_column":302.6,
     "uv_index":8.6,
-    "ozone_column":302.6
+    "date":"2025-09-01 00:00:00"
   },
   {
-    "date":"2025-09-02 00:00:00",
+    "ozone_column":302.6,
     "uv_index":8.5,
-    "ozone_column":302.6
+    "date":"2025-09-02 00:00:00"
   },
   {
-    "date":"2025-09-03 00:00:00",
+    "ozone_column":295.4,
     "uv_index":8.7,
-    "ozone_column":295.4
+    "date":"2025-09-03 00:00:00"
   },
   {
-    "date":"2025-09-04 00:00:00",
+    "ozone_column":295.5,
     "uv_index":8.6,
-    "ozone_column":295.5
+    "date":"2025-09-04 00:00:00"
   },
   {
-    "date":"2025-09-05 00:00:00",
+    "ozone_column":299.6,
     "uv_index":8.4,
-    "ozone_column":299.6
+    "date":"2025-09-05 00:00:00"
   },
   {
-    "date":"2025-09-06 00:00:00",
+    "ozone_column":300.7,
     "uv_index":8.3,
-    "ozone_column":300.7
+    "date":"2025-09-06 00:00:00"
   },
   {
-    "date":"2025-09-07 00:00:00",
+    "ozone_column":297.5,
     "uv_index":8.3,
-    "ozone_column":297.5
+    "date":"2025-09-07 00:00:00"
   },
   {
-    "date":"2025-09-08 00:00:00",
+    "ozone_column":296.4,
     "uv_index":8.3,
-    "ozone_column":296.4
+    "date":"2025-09-08 00:00:00"
   },
   {
-    "date":"2025-09-09 00:00:00",
+    "ozone_column":299.6,
     "uv_index":8.1,
-    "ozone_column":299.6
+    "date":"2025-09-09 00:00:00"
   },
   {
-    "date":"2025-09-10 00:00:00",
+    "ozone_column":313.1,
     "uv_index":7.5,
-    "ozone_column":313.1
+    "date":"2025-09-10 00:00:00"
   },
   {
-    "date":"2025-09-11 00:00:00",
+    "ozone_column":305.9,
     "uv_index":7.7,
-    "ozone_column":305.9
+    "date":"2025-09-11 00:00:00"
   },
   {
-    "date":"2025-09-12 00:00:00",
+    "ozone_column":301.3,
     "uv_index":7.8,
-    "ozone_column":301.3
+    "date":"2025-09-12 00:00:00"
   },
   {
-    "date":"2025-09-13 00:00:00",
+    "ozone_column":285.2,
     "uv_index":8.3,
-    "ozone_column":285.2
+    "date":"2025-09-13 00:00:00"
   },
   {
-    "date":"2025-09-14 00:00:00",
+    "ozone_column":287.6,
+    "uv_index":8.1,
+    "date":"2025-09-14 00:00:00"
+  },
+  {
+    "ozone_column":282.2,
     "uv_index":8.2,
-    "ozone_column":284.4
+    "date":"2025-09-15 00:00:00"
   },
   {
-    "date":"2025-09-15 00:00:00",
+    "ozone_column":283.2,
+    "uv_index":8.1,
+    "date":"2025-09-16 00:00:00"
+  },
+  {
+    "ozone_column":275.5,
     "uv_index":8.3,
-    "ozone_column":280.0
+    "date":"2025-09-17 00:00:00"
   },
   {
-    "date":"2025-09-16 00:00:00",
-    "uv_index":8.0,
-    "ozone_column":284.3
+    "ozone_column":272.7,
+    "uv_index":8.3,
+    "date":"2025-09-18 00:00:00"
   },
   {
-    "date":"2025-09-17 00:00:00",
+    "ozone_column":275.9,
     "uv_index":8.1,
-    "ozone_column":280.8
-  },
-  {
-    "date":"2025-09-18 00:00:00",
-    "uv_index":8.1,
-    "ozone_column":278.5
+    "date":"2025-09-19 00:00:00"
   }
 ]
