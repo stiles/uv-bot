@@ -760,18 +760,23 @@
     "uv_index":4.6
   },
   {
-    "ozone_column":268.4,
+    "ozone_column":267.8,
     "date":"2025-10-24 00:00:00",
     "uv_index":4.9
   },
   {
-    "ozone_column":283.5,
+    "ozone_column":274.1,
     "date":"2025-10-25 00:00:00",
-    "uv_index":4.5
+    "uv_index":4.7
   },
   {
-    "ozone_column":270.9,
+    "ozone_column":260.8,
     "date":"2025-10-26 00:00:00",
-    "uv_index":4.7
+    "uv_index":4.9
+  },
+  {
+    "ozone_column":260.5,
+    "date":"2025-10-27 00:00:00",
+    "uv_index":4.9
   }
 ]
