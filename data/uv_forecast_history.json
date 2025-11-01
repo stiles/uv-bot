@@ -811,17 +811,22 @@
   },
   {
     "date":"2025-11-03 00:00:00",
-    "ozone_column":269.4,
-    "uv_index":4.1
+    "ozone_column":267.8,
+    "uv_index":4.2
   },
   {
     "date":"2025-11-04 00:00:00",
-    "ozone_column":252.0,
+    "ozone_column":252.6,
     "uv_index":4.4
   },
   {
     "date":"2025-11-05 00:00:00",
-    "ozone_column":255.4,
-    "uv_index":4.3
+    "ozone_column":261.0,
+    "uv_index":4.1
+  },
+  {
+    "date":"2025-11-06 00:00:00",
+    "ozone_column":268.0,
+    "uv_index":3.9
   }
 ]
