@@ -911,27 +911,32 @@
   },
   {
     "uv_index":2.7,
-    "ozone_column":291.6,
+    "ozone_column":292.5,
     "date":"2025-11-23 00:00:00"
   },
   {
     "uv_index":2.8,
-    "ozone_column":280.8,
+    "ozone_column":278.7,
     "date":"2025-11-24 00:00:00"
   },
   {
     "uv_index":2.6,
-    "ozone_column":293.2,
+    "ozone_column":293.0,
     "date":"2025-11-25 00:00:00"
   },
   {
-    "uv_index":2.7,
-    "ozone_column":282.2,
+    "uv_index":2.8,
+    "ozone_column":278.3,
     "date":"2025-11-26 00:00:00"
   },
   {
     "uv_index":2.9,
-    "ozone_column":266.1,
+    "ozone_column":265.5,
     "date":"2025-11-27 00:00:00"
+  },
+  {
+    "uv_index":2.7,
+    "ozone_column":276.1,
+    "date":"2025-11-28 00:00:00"
   }
 ]
