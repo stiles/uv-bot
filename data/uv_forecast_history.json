@@ -966,27 +966,32 @@
   },
   {
     "date":"2025-12-04 00:00:00",
-    "ozone_column":300.1,
+    "ozone_column":307.9,
     "uv_index":2.3
   },
   {
     "date":"2025-12-05 00:00:00",
-    "ozone_column":276.8,
+    "ozone_column":279.1,
     "uv_index":2.5
   },
   {
     "date":"2025-12-06 00:00:00",
-    "ozone_column":277.0,
-    "uv_index":2.5
+    "ozone_column":269.3,
+    "uv_index":2.6
   },
   {
     "date":"2025-12-07 00:00:00",
-    "ozone_column":289.8,
+    "ozone_column":289.2,
     "uv_index":2.4
   },
   {
     "date":"2025-12-08 00:00:00",
-    "ozone_column":302.3,
-    "uv_index":2.2
+    "ozone_column":288.1,
+    "uv_index":2.4
+  },
+  {
+    "date":"2025-12-09 00:00:00",
+    "ozone_column":294.7,
+    "uv_index":2.3
   }
 ]
