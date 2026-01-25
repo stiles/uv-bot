@@ -202,22 +202,22 @@ def main():
         processed_cols = []
 
         if 'date' in df.columns:
-            df.loc[:, 'date'] = pd.to_datetime(df['date'], format='%d %b %Y', errors='coerce') # Use explicit format
+            df['date'] = pd.to_datetime(df['date'], format='%d %b %Y', errors='coerce')
             processed_cols.append('date')
         else:
             print("Critical Error: 'date' column not found in the fetched table.")
-            sys.exit(1) # Date is absolutely critical
+            sys.exit(1)
         
         if 'uv_index' in df.columns:
-            df.loc[:, 'uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce') # Use .loc for assignment
+            df['uv_index'] = pd.to_numeric(df['uv_index'], errors='coerce')
             processed_cols.append('uv_index')
         else:
             print("Critical Error: 'uv_index' column not found in the fetched table.")
-            sys.exit(1) # UV index is absolutely critical
+            sys.exit(1)
 
         if 'ozone_column' in df.columns:
-            df.loc[:, 'ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
-            df.loc[:, 'ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce') # Use .loc for assignment
+            df['ozone_column'] = df['ozone_column'].astype(str).str.replace('DU', '', regex=False).str.strip()
+            df['ozone_column'] = pd.to_numeric(df['ozone_column'], errors='coerce')
             processed_cols.append('ozone_column')
         else:
             print("Warning: 'ozone_column' not found in the fetched table. It will not be in historical data for this run.")
@@ -228,9 +228,9 @@ def main():
 
         # Prepare current_forecast_df for email (it needs same processing as df)
         if 'date' in current_forecast_df.columns:
-             current_forecast_df.loc[:, 'date'] = pd.to_datetime(current_forecast_df['date'], errors='coerce') # Use .loc
+            current_forecast_df['date'] = pd.to_datetime(current_forecast_df['date'], errors='coerce')
         if 'uv_index' in current_forecast_df.columns:
-             current_forecast_df.loc[:, 'uv_index'] = pd.to_numeric(current_forecast_df['uv_index'], errors='coerce') # Use .loc
+            current_forecast_df['uv_index'] = pd.to_numeric(current_forecast_df['uv_index'], errors='coerce')
         # Ozone is not used in email, but if it were, it would be processed here too for current_forecast_df
         
         current_forecast_df.dropna(subset=required_cols_for_email, how='any', inplace=True) # inplace=True is fine
@@ -270,10 +270,12 @@ def main():
                 if 'date' in json_df.columns:
                     # Ensure date column is datetime and handle any NaN values
                     json_df['date'] = pd.to_datetime(json_df['date'], errors='coerce')
-                    # Drop rows where date conversion failed
-                    json_df = json_df.dropna(subset=['date'])
-                    # Convert to string format for JSON
-                    json_df['date'] = json_df['date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+                    # Drop rows where date conversion failed and get a proper copy
+                    json_df = json_df.dropna(subset=['date']).copy()
+                    # Convert to string format for JSON (using apply to safely handle any edge cases)
+                    json_df['date'] = json_df['date'].apply(
+                        lambda x: x.strftime('%Y-%m-%d %H:%M:%S') if pd.notna(x) else None
+                    )
                 
                 json_df.to_json(history_json_path, orient='records', indent=2, date_format='iso')
                 print(f"Historical data updated and saved to {history_json_path}")
