@@ -125,7 +125,7 @@
     "uv_index":3.4
   },
   {
-    "ozone_column":359.5,
+    "ozone_column":363.1,
     "date":"2026-02-19 00:00:00",
     "uv_index":3.5
   },
@@ -135,9 +135,9 @@
     "uv_index":3.9
   },
   {
-    "ozone_column":344.6,
+    "ozone_column":315.6,
     "date":"2026-02-21 00:00:00",
-    "uv_index":3.9
+    "uv_index":4.3
   },
   {
     "ozone_column":311.8,
@@ -145,8 +145,13 @@
     "uv_index":4.4
   },
   {
-    "ozone_column":287.5,
+    "ozone_column":282.6,
     "date":"2026-02-23 00:00:00",
-    "uv_index":5.0
+    "uv_index":5.1
+  },
+  {
+    "ozone_column":276.6,
+    "date":"2026-02-24 00:00:00",
+    "uv_index":5.4
   }
 ]
