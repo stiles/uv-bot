@@ -791,17 +791,22 @@
   },
   {
     "date":"2026-07-02 00:00:00",
-    "uv_index":10.3,
-    "ozone_column":317.5
+    "uv_index":9.7,
+    "ozone_column":331.5
   },
   {
     "date":"2026-07-03 00:00:00",
-    "uv_index":10.2,
-    "ozone_column":317.7
+    "uv_index":11.1,
+    "ozone_column":300.7
   },
   {
     "date":"2026-07-04 00:00:00",
-    "uv_index":10.0,
-    "ozone_column":322.9
+    "uv_index":10.4,
+    "ozone_column":314.8
+  },
+  {
+    "date":"2026-07-05 00:00:00",
+    "uv_index":11.9,
+    "ozone_column":285.8
   }
 ]
